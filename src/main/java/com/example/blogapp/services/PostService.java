@@ -31,6 +31,13 @@ public class PostService {
         post.setApproved(true);
         postRepository.save(post);
     }
+    public boolean deletePost(int postId) {
+        if (postRepository.existsById(postId)) {
+            postRepository.deleteById(postId);
+            return true;
+        }
+        return false;
+    }
 
     public List<Post> getAllPosts() {
         return postRepository.findAll();
