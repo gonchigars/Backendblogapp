@@ -1,8 +1,13 @@
 package com.example.blogapp.controllers;
 
+
 import com.example.blogapp.models.User;
 import com.example.blogapp.services.UserService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,5 +21,9 @@ public class UserController {
         return userService.createUser(user);
     }
 
-    // Other endpoints for user management
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+}
 }

@@ -22,6 +22,15 @@ public class PostController {
     public void approvePost(@PathVariable int postId) {
         postService.approvePost(postId);
     }
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable int postId) {
+        boolean deleted = postService.deletePost(postId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @GetMapping
     public ResponseEntity<List<Post>> getAllPosts() {
