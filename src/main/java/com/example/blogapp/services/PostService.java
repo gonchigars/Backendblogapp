@@ -18,16 +18,17 @@ public class PostService {
     private UserRepository userRepository;
 
     public Post createPost(Post post) {
-        if (post.getUser() != null && post.getUser().getUserId() != 0) {
-            User user = userRepository.findById(post.getUser().getUserId())
+        if (post.getUser() != null && post.getUser().getId() != null) {
+            User user = userRepository.findById(post.getUser().getId())
                     .orElseThrow(() -> new RuntimeException("User not found"));
             post.setUser(user);
         }
         return postRepository.save(post);
     }
 
-    public void approvePost(int postId) {
-        Post post = postRepository.findById(postId).orElseThrow();
+    public void approvePost(String postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
         post.setApproved(true);
         postRepository.save(post);
     }
@@ -37,4 +38,21 @@ public class PostService {
     }
 
     // Other methods for post management
+
+    public Post getPostById(String postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+    }
+
+    public Post updatePost(String postId, Post updatedPost) {
+        Post post = getPostById(postId);
+        post.setTitle(updatedPost.getTitle());
+        post.setContent(updatedPost.getContent());
+        return postRepository.save(post);
+    }
+
+    public void deletePost(String postId) {
+        Post post = getPostById(postId);
+        postRepository.delete(post);
+    }
 }

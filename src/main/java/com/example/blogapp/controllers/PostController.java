@@ -14,20 +14,38 @@ public class PostController {
     private PostService postService;
 
     @PostMapping
-    public Post createPost(@RequestBody Post post) {
-        return postService.createPost(post);
+    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+        Post createdPost = postService.createPost(post);
+        return ResponseEntity.ok(createdPost);
     }
 
     @PutMapping("/{postId}/approve")
-    public void approvePost(@PathVariable int postId) {
+    public ResponseEntity<Void> approvePost(@PathVariable String postId) {
         postService.approvePost(postId);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
     public ResponseEntity<List<Post>> getAllPosts() {
         List<Post> posts = postService.getAllPosts();
         return ResponseEntity.ok(posts);
+    }
 
-    // Other endpoints for post management
-}
+    @GetMapping("/{postId}")
+    public ResponseEntity<Post> getPostById(@PathVariable String postId) {
+        Post post = postService.getPostById(postId);
+        return ResponseEntity.ok(post);
+    }
+
+    @PutMapping("/{postId}")
+    public ResponseEntity<Post> updatePost(@PathVariable String postId, @RequestBody Post post) {
+        Post updatedPost = postService.updatePost(postId, post);
+        return ResponseEntity.ok(updatedPost);
+    }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable String postId) {
+        postService.deletePost(postId);
+        return ResponseEntity.ok().build();
+    }
 }

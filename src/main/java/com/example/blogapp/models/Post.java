@@ -1,27 +1,26 @@
 package com.example.blogapp.models;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
-@Entity
-@Table(name = "posts")
+@Document(collection = "posts")
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int postId;
+    private String id;
     private String title;
     private String content;
     private boolean approved;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @DBRef
     private User user;
 
-    public int getPostId() {
-        return postId;
+    public String getId() {
+        return id;
     }
 
-    public void setPostId(int postId) {
-        this.postId = postId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -56,6 +55,24 @@ public class Post {
         this.user = user;
     }
 
-    // Constructors, getters, and setters
-    
+    // Constructors
+    public Post() {}
+
+    public Post(String title, String content, User user) {
+        this.title = title;
+        this.content = content;
+        this.user = user;
+        this.approved = false;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", approved=" + approved +
+                ", user=" + user +
+                '}';
+    }
 }
